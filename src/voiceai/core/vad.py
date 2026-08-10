@@ -2,11 +2,11 @@
 
 Two separate concerns that are easy to conflate and expensive to get wrong:
 
-*Is there speech in this frame?* - a cheap energy test. Deliberately not a
+*Is there speech in this frame?* — a cheap energy test. Deliberately not a
 neural VAD by default: the offline stack must run anywhere, and the barge-in
 decision is dominated by the confirmation logic below, not by the frame test.
 
-*Should we interrupt the agent?* - a different question entirely. A single loud
+*Should we interrupt the agent?* — a different question entirely. A single loud
 frame is a cough, a door, or the agent's own voice leaking through the mic.
 Interrupting on one frame produces an agent that flinches at everything; waiting
 too long produces one that talks over you. That tradeoff is the ``onset_frames``
@@ -54,6 +54,7 @@ class EnergyVAD:
             self._silence_run = 0
             return SpeechState.SPEECH
         self._silence_run += 1
+        # Still inside the hangover window: treat as continuing speech.
         if self._silence_run < self._release_frames:
             return SpeechState.SPEECH
         return SpeechState.SILENCE
@@ -66,11 +67,12 @@ class BargeInDetector:
     """Decides when user speech should cancel agent playback.
 
     Requires ``onset_frames`` *consecutive* speech frames before firing. At the
-    default 20ms framing, 6 frames = 120ms of confirmation.
+    default 20ms framing, 3 frames = 60ms of confirmation, which leaves 40ms of
+    the 100ms budget for everything else in the interrupt path.
 
     ``echo_guard`` exists because the microphone hears the speaker. Without
     acoustic echo cancellation, the agent's own output re-enters as "user
-    speech" and it interrupts itself within a frame or two - the single most
+    speech" and it interrupts itself within a frame or two — the single most
     common way a naive full-duplex loop fails. When no AEC is available, this
     gate suppresses barge-in unless the input meaningfully exceeds the level the
     agent is currently emitting. It is a crude proxy for AEC and is documented
@@ -81,7 +83,7 @@ class BargeInDetector:
 
     def __init__(
         self,
-        onset_frames: int = 6,
+        onset_frames: int = 3,
         echo_guard: bool = True,
         margin_db: float = 6.0,
     ) -> None:
@@ -102,6 +104,7 @@ class BargeInDetector:
         speaking = level >= 0.02
 
         if speaking and self._echo_guard and agent_output_rms > 0.0:
+            # Require the user to be clearly louder than the leaking output.
             speaking = level > agent_output_rms * self._margin
 
         if not speaking:
@@ -110,7 +113,7 @@ class BargeInDetector:
 
         self._run += 1
         if self._run == self._onset_frames:
-            return True
+            return True  # fires exactly once per onset
         return False
 
     def reset(self) -> None:
