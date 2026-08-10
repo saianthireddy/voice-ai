@@ -36,8 +36,8 @@ class VirtualClock:
     latency assertions in the test suite meaningful rather than flaky: they
     measure the *algorithm's* reaction time in audio-time, not the runtime's.
 
-    Real-world latency adds the compute cost on top; ``voiceai.bench_pipeline``
-    measures that separately against SystemClock and both are reported.
+    Real-world latency adds the compute cost on top; ``voiceai.bench`` measures
+    that separately against SystemClock and both are reported side by side.
 
     Time accumulates in integer nanoseconds, not floats. Adding 0.02 repeatedly
     drifts, and an assertion of "<= 100ms" then fails against a measurement of
