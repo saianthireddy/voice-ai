@@ -2,7 +2,7 @@
 
 One frame is the atomic unit of everything downstream: VAD decisions, latency
 accounting, and interrupt granularity. Frame size is therefore a latency floor
-you cannot get under - a 20ms frame means barge-in can never be detected faster
+you cannot get under — a 20ms frame means barge-in can never be detected faster
 than 20ms plus whatever confirmation the VAD requires.
 """
 
