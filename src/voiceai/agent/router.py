@@ -6,7 +6,7 @@ from it. "Hello" does not need a vector search, and in a voice pipeline that
 saved lookup is a measurable slice of the response budget.
 
 The router is rule-based on purpose. A learned classifier here would add model
-load time to the critical path to decide something keyword rules get right
+load time to the critical path to decide something that keyword rules get right
 almost always, and when it was wrong it would be wrong invisibly.
 """
 
