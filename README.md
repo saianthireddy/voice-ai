@@ -242,6 +242,33 @@ beneath it would be a lie.
 
 **37 tests, all offline, ~0.2s.**
 
+## Repository Structure
+
+```
+voice-ai/
+├── src/voiceai/
+│   ├── agent/
+│   │   ├── responder.py
+│   │   └── router.py
+│   ├── api/
+│   ├── core/
+│   │   ├── audio.py
+│   │   ├── clock.py
+│   │   ├── pacing.py
+│   │   ├── protocols.py
+│   │   └── vad.py
+│   ├── providers/
+│   └── rag/
+│       ├── embeddings.py
+│       ├── retriever.py
+│       └── store.py
+├── .gitignore
+├── pyproject.toml
+└── README.md
+```
+
+`api/` and `providers/` currently hold only package stubs — no routes or provider implementations yet.
+
 ---
 
 ## Quickstart
