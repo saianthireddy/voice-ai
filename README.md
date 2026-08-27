@@ -43,14 +43,29 @@ flowchart TD
 The whole service runs behind **FastAPI** (REST + a WebSocket for duplex audio)
 and ships as a multi-stage, non-root **Docker** image.
 
+### Ingestion path (as implemented)
+
+```mermaid
+flowchart LR
+    DOC["Document<br/><i>pre-split into chunks</i>"] --> ING["POST /api/v1/ingest"]
+    ING --> EMB["Embedder<br/><i>hashing, offline & deterministic</i>"]
+    EMB --> VS2["Vector Store<br/><i>exact cosine</i>"]
+    VS2 -.->|queried at ask time| RET["RAG retrieval"]
+
+    style ING fill:#1a2e3d,stroke:#5cc8ff,color:#fff
+    style VS2 fill:#3a2410,stroke:#ff9e5c,color:#fff
+```
+
+There is no chunking step implemented yet: `/api/v1/ingest` expects chunks
+that are already split. Turning raw documents into chunks is not built.
+
 ---
 
 ## Two hard problems, both measured
 
 ### 1. Barge-in — how fast can it stop talking?
 
-Measured in **audio-time** against a virtual clock, so the numbers reproduce in
-CI without a microphone. `onset_frames` is the confirmation window before an
+Measured in **audio-time** against a virtual clock, so the numbers reproduce in CI without a microphone. `onset_frames` is the confirmation window before an
 interrupt fires:
 
 | onset frames | confirm window | barge-in p50 | barge-in p95 | false interrupts |
