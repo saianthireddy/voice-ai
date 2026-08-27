@@ -40,6 +40,19 @@ flowchart TD
     style VS fill:#3a2410,stroke:#ff9e5c,color:#fff
 ```
 
+### Tech Stack
+
+| Area | Technology |
+|---|---|
+| API | FastAPI, WebSocket |
+| Agent | Python, rule-based routing |
+| RAG | Hybrid dense + lexical retrieval |
+| Vector Search | Exact cosine, FAISS/Qdrant roadmap |
+| Speech | faster-whisper, Piper |
+| Testing | Pytest, deterministic virtual clock |
+| Deployment | Docker, Docker Compose |
+| AI | Embeddings, LLM integration |
+
 The whole service runs behind **FastAPI** (REST + a WebSocket for duplex audio)
 and ships as a multi-stage, non-root **Docker** image.
 
