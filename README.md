@@ -49,8 +49,8 @@ flowchart TD
 | RAG | Hybrid dense + lexical retrieval |
 | Vector Search | Exact cosine, FAISS/Qdrant roadmap |
 | Speech | faster-whisper, Piper |
-| Testing | Pytest, deterministic virtual clock |
-| Deployment | Docker, Docker Compose |
+| Testing | Pytest, deterministic virtual clock 🟡 (no tests exist yet) |
+| Deployment | Docker, Docker Compose 🟡 (no Dockerfile in repo yet) |
 | AI | Embeddings, LLM integration |
 
 The whole service runs behind **FastAPI** (REST + a WebSocket for duplex audio)
