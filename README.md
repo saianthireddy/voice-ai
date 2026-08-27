@@ -13,6 +13,14 @@ what retrieval costs inside a real-time budget.
 ![python](https://img.shields.io/badge/python-3.10%20%7C%203.12-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
 
+## Highlights
+
+- **100ms barge-in** at 0% false interrupts
+- **92% retrieval recall** with 0/6 false answers
+- Retrieval benchmarked from 100 → 20,000 chunks
+- Grounded answers with source citations
+- FastAPI REST + WebSocket architecture
+
 ---
 
 ## Architecture
